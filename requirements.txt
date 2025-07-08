@@ -1,0 +1,13 @@
+# Python project dependencies will be listed here.
+# For example:
+# flask
+# SQLAlchemy
+# numpy
+# Pillow (for image manipulation)
+# tensorflow or pytorch (for AI components)
+# openai (if using OpenAI APIs)
+# psycopg2-binary (if using PostgreSQL)
+# python-dotenv (for environment variables)
+# requests
+# celery (for background tasks)
+# redis (if using Celery with Redis)
