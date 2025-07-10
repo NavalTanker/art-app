@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My App{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Art Showcase App</h1>
+    </header>
+    <div class="container">
+        <aside class="left-panel">
+            <h2>Navigation</h2>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('showcase_galleries') }}">Showcase</a></li>
+                <!-- Add other main sections here -->
+            </ul>
+        </aside>
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+        <aside class="right-panel">
+            <h2>Details / Ads</h2>
+            <p>Placeholder for right panel content.</p>
+        </aside>
+    </div>
+    <footer>
+        <p>&copy; 2023 Your Name/Company</p>
+    </footer>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
