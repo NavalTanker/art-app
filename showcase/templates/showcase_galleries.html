@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}Showcase Galleries - Art Showcase{% endblock %}
+
+{% block content %}
+<h2>Showcase Galleries</h2>
+<p>Click on a gallery to view the artist's developmental trail and artwork.</p>
+<div class="gallery-grid">
+    {% for i in range(1, 7) %} {# Placeholder for 6 galleries #}
+    <div class="gallery-card">
+        <a href="{{ url_for('gallery_detail', gallery_id=i) }}">
+            <img src="{{ url_for('static', filename='images/placeholder_gallery.png') }}" alt="Gallery {{ i }} Thumbnail">
+            <h3>Gallery {{ i }}</h3>
+            <p>A brief description of Gallery {{ i }}.</p>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
