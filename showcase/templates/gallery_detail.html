@@ -1,27 +1,31 @@
 {% extends "layout.html" %}
 
-{% block title %}Gallery {{ gallery_id }} - Art Showcase{% endblock %}
+{% block title %}{{ gallery.name }} - Art App{% endblock %}
 
 {% block content %}
 <a href="{{ url_for('showcase_galleries') }}" class="back-link">&larr; Back to Galleries</a>
-<h2>Artwork Developmental Trail - Gallery {{ gallery_id }}</h2>
+<h2>{{ gallery.name }}</h2>
 <p>This page shows the progression of artworks within this gallery.</p>
 
 <div class="artwork-trail">
-    {% for stage in range(1, 4) %} {# Placeholder for 3 development stages #}
-    <div class="artwork-stage">
-        <div class="artwork-frame-container">
-            <img src="{{ url_for('static', filename='images/placeholder_art_' ~ stage ~ '.png') }}" alt="Artwork Stage {{ stage }}" class="artwork-image" id="artwork-{{ stage }}">
+    {% if gallery.stages %}
+        {% for stage in gallery.stages %}
+        <div class="artwork-stage">
+            <div class="artwork-frame-container">
+                <img src="{{ stage.image_url }}" alt="{{ stage.name }}" class="artwork-image">
+            </div>
+            <div class="artwork-description">
+                <h3>{{ stage.name }}</h3>
+                <p>{{ stage.description }}</p>
+            </div>
         </div>
-        <div class="artwork-description">
-            <h3>Stage {{ stage }}</h3>
-            <p>This is a placeholder description for stage {{ stage }} of the artwork. It explains the techniques, inspirations, or challenges faced during this phase of development.</p>
-        </div>
-    </div>
-    {% if not loop.last %}
-    <div class="trail-connector"></div>
+        {% if not loop.last %}
+        <div class="trail-connector"></div>
+        {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>This gallery has no artwork stages yet. Add images to the <code>showcase/static/galleries/{{ gallery.id }}/</code> subdirectories.</p>
     {% endif %}
-    {% endfor %}
 </div>
 
 <hr>
@@ -49,6 +53,4 @@
         <p>No Frame</p>
     </div>
 </div>
-<p class="small-note">Note: Frame selection is currently a visual placeholder and will apply to the first artwork stage for demonstration.</p>
-
 {% endblock %}

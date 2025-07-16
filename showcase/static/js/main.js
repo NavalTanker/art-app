@@ -19,4 +19,27 @@ function selectFrame(frameClass) {
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log("Art App JS Loaded");
+
+    // Modal functionality
+    const aboutModal = document.getElementById('about-modal');
+    const aboutButton = document.getElementById('about-button');
+    const closeButton = document.querySelector('.close-button');
+
+    if (aboutButton) {
+        aboutButton.onclick = function() {
+            aboutModal.style.display = 'block';
+        }
+    }
+
+    if (closeButton) {
+        closeButton.onclick = function() {
+            aboutModal.style.display = 'none';
+        }
+    }
+
+    window.onclick = function(event) {
+        if (event.target == aboutModal) {
+            aboutModal.style.display = 'none';
+        }
+    }
 });
