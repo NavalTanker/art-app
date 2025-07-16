@@ -4,7 +4,8 @@ import natsort
 
 app = Flask(__name__)
 app.config['GALLERIES_FOLDER'] = os.path.join('static', 'galleries')
-app.config['PLACEHOLDER_IMAGE'] = url_for('static', filename='images/placeholder_art_1.png')
+# Store the relative path, not the generated URL
+app.config['PLACEHOLDER_IMAGE_PATH'] = 'images/placeholder_art_1.png'
 app.config['NUM_STAGES'] = 3
 
 def get_galleries_data():
@@ -21,21 +22,24 @@ def get_galleries_data():
     for gallery_name in gallery_dirs:
         gallery_path = os.path.join(base_path, gallery_name)
 
-        # Determine the path for the final stage to get the thumbnail
         last_stage_name = f'stage-{app.config["NUM_STAGES"]}'
         last_stage_path = os.path.join(gallery_path, last_stage_name)
 
-        thumbnail_url = app.config['PLACEHOLDER_IMAGE']
+        # Default to the placeholder path
+        thumbnail_path = app.config['PLACEHOLDER_IMAGE_PATH']
+
         if os.path.exists(last_stage_path):
             stage_images = [f for f in os.listdir(last_stage_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
             if stage_images:
-                thumbnail_url = url_for('static', filename=f'galleries/{gallery_name}/{last_stage_name}/{stage_images[0]}')
+                # Use the real image path if it exists
+                thumbnail_path = f'galleries/{gallery_name}/{last_stage_name}/{stage_images[0]}'
 
         galleries.append({
             'id': gallery_name,
             'name': gallery_name.replace('-', ' ').title(),
             'description': f'A collection from {gallery_name.replace("-", " ").title()}. View the developmental trail.',
-            'thumbnail': thumbnail_url
+            # Generate URL inside the request context
+            'thumbnail': url_for('static', filename=thumbnail_path)
         })
 
     return galleries
@@ -55,18 +59,19 @@ def get_gallery_detail_data(gallery_id):
         stage_name = f'stage-{i}'
         stage_path = os.path.join(gallery_path, stage_name)
 
-        image_url = app.config['PLACEHOLDER_IMAGE']
+        image_path = app.config['PLACEHOLDER_IMAGE_PATH']
         description = f"Artwork for {stage_name.replace('-', ' ').title()} has not been uploaded yet."
 
         if os.path.exists(stage_path):
             images = [f for f in os.listdir(stage_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
             if images:
-                image_url = url_for('static', filename=f'galleries/{gallery_id}/{stage_name}/{images[0]}')
+                image_path = f'galleries/{gallery_id}/{stage_name}/{images[0]}'
                 description = f"This is the artwork from {stage_name.replace('-', ' ').title()}."
 
         stages_data.append({
             'name': stage_name.replace('-', ' ').title(),
-            'image_url': image_url,
+            # Generate URL inside the request context
+            'image_url': url_for('static', filename=image_path),
             'description': description
         })
 
