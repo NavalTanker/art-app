@@ -236,7 +236,7 @@ header {
 }
 
 .gallery-card {
-    flex: 0 1 280px; /* Flex basis for 4-across on ~1300px+ screens */
+    flex: 0 1 280px;
     border-radius: 8px;
     background-color: #fff;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -259,7 +259,9 @@ header {
 
 .gallery-card-content {
     padding: 15px;
-    flex-grow: 1; /* Allows content to fill space */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Ensure this container grows to fill space */
 }
 
 .gallery-card h3 {
@@ -272,9 +274,7 @@ header {
     font-size: 0.9em;
     color: #555;
     margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /* Removed single-line truncation properties */
 }
 
 .gallery-card a {
