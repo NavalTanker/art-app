@@ -1,9 +1,9 @@
 /* General Body Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #f0f2f5;
     color: #333;
     display: flex;
     flex-direction: column;
@@ -11,114 +11,159 @@ body {
 }
 
 header {
-    background-color: #333;
-    color: #fff;
+    background-color: #ffffff;
+    color: #333;
     padding: 1rem 0;
     text-align: center;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 header h1 {
     margin: 0;
+    font-weight: 700;
+}
+
+.header-link {
+    text-decoration: none;
+    color: inherit;
 }
 
 .container {
     display: flex;
     flex-grow: 1;
-    width: 90%;
-    max-width: 1400px;
-    margin: 20px auto;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-/* Panels */
-.left-panel, .right-panel {
-    width: 20%;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-right: 1px solid #ddd; /* For left panel */
-}
-
-.right-panel {
-    border-left: 1px solid #ddd; /* For right panel */
-    border-right: none;
-}
-
-.left-panel h2, .right-panel h2 {
-    color: #555;
-    font-size: 1.2em;
-}
-
-.left-panel ul {
-    list-style: none;
-    padding: 0;
-}
-
-.left-panel ul li a {
-    text-decoration: none;
-    color: #007bff;
-    display: block;
-    padding: 8px 0;
-}
-
-.left-panel ul li a:hover {
-    text-decoration: underline;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .main-content {
-    width: 60%;
-    padding: 20px;
+    width: 100%;
+    padding: 20px 40px; /* More horizontal padding */
     overflow-y: auto; /* Scroll if content is too long */
 }
 
 .main-content h2 {
     color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+    font-weight: 300;
 }
 
-.panel-placeholder {
-    border: 1px dashed #ccc;
-    padding: 15px;
-    margin-top: 15px;
-    background-color: #eef;
+/* Home Page Panels */
+.home-panels-container {
+    display: flex;
+    justify-content: center;
+    align-items: stretch; /* Makes panels same height */
+    gap: 30px;
+    width: 100%;
+    height: calc(100vh - 150px); /* Adjust height based on header/footer */
+    padding: 20px 0;
+}
+
+.home-panel {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.home-panel:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); /* Dark overlay */
+    transition: background-color 0.3s ease;
+}
+
+.home-panel:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.home-panel:hover:before {
+    background-color: rgba(0,0,0,0.3); /* Lighten overlay on hover */
+}
+
+.panel-content {
+    position: relative; /* To be on top of the overlay */
+    z-index: 1;
+    padding: 20px;
+}
+
+.panel-content h2 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.panel-content p {
+    font-size: 1.2em;
+    font-weight: 300;
+}
+
+/* Specific Panel Backgrounds */
+.showcase-panel {
+    background-image: url('../images/bg_showcase.jpg'); /* Placeholder */
+}
+.lessons-panel {
+    background-image: url('../images/bg_lessons.jpg'); /* Placeholder */
+}
+.drawing-panel {
+    background-image: url('../images/bg_drawing.jpg'); /* Placeholder */
 }
 
 /* Gallery Grid */
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
     margin-top: 20px;
+    padding: 0 10%; /* Give some side margin on gallery page */
 }
 
 .gallery-card {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    text-align: center;
+    border-radius: 8px;
     background-color: #fff;
-    transition: box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden; /* To keep image corners rounded */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .gallery-card:hover {
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
 }
 
 .gallery-card img {
     max-width: 100%;
-    height: 150px; /* Fixed height for consistency */
-    object-fit: cover; /* To maintain aspect ratio */
-    border-bottom: 1px solid #eee;
-    margin-bottom: 10px;
+    height: 200px; /* Increased height */
+    object-fit: cover;
+    display: block;
 }
 
 .gallery-card h3 {
-    margin: 10px 0 5px 0;
-    font-size: 1.1em;
+    margin: 15px;
+    font-size: 1.2em;
+    font-weight: 700;
 }
 
 .gallery-card p {
-    font-size: 0.9em;
-    color: #666;
+    font-size: 0.95em;
+    color: #555;
+    margin: 0 15px 15px 15px;
 }
 
 .gallery-card a {
@@ -126,36 +171,53 @@ header h1 {
     color: inherit;
 }
 
+/* Back to Galleries Link */
+.back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
 /* Artwork Developmental Trail */
 .artwork-trail {
     margin-top: 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .artwork-stage {
     display: flex;
-    align-items: flex-start; /* Align items to the top */
+    align-items: center; /* Vertically center align content */
     margin-bottom: 30px;
-    padding: 15px;
-    border: 1px solid #eee;
-    border-radius: 5px;
-    background-color: #fdfdfd;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
 .artwork-frame-container {
     margin-right: 20px;
-    padding: 10px; /* Space for the frame */
-    border: 2px solid transparent; /* Initial border, will be styled by JS for frame */
+    padding: 20px; /* This padding creates the border effect with the background image */
     background-repeat: no-repeat;
-    background-size: contain; /* Or cover, depending on frame image style */
-    background-position: center;
-    display: inline-block; /* To wrap around the image */
+    background-size: 100% 100%; /* Stretch background to fill the container */
+    display: inline-block;
+    transition: background-image 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .artwork-image {
     display: block; /* Remove extra space below image */
     width: 200px; /* Adjust as needed */
     height: auto; /* Maintain aspect ratio */
-    border: 1px solid #ccc; /* Simple border for the art itself */
+    border: 1px solid #ddd;
+    background-color: #fff; /* Ensure art background is solid */
 }
 
 .artwork-description {
@@ -178,22 +240,30 @@ header h1 {
 .frame-selection {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #eee;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f0f2f5;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .frame-option {
-    width: 100px; /* Adjust as needed */
+    width: 100px;
     text-align: center;
     cursor: pointer;
-    border: 1px solid #ddd;
+    border: 2px solid transparent;
+    border-radius: 8px;
     padding: 5px;
-    border-radius: 3px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.frame-option:hover {
+    transform: scale(1.05);
+    border-color: #007bff;
 }
 
 .frame-option:hover {

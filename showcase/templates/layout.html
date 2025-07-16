@@ -3,29 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My App{% endblock %}</title>
+    <title>{% block title %}Art App{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
-        <h1>Art Showcase App</h1>
+        <h1><a href="{{ url_for('home') }}" class="header-link">Art App</a></h1>
     </header>
     <div class="container">
-        <aside class="left-panel">
-            <h2>Navigation</h2>
-            <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('showcase_galleries') }}">Showcase</a></li>
-                <!-- Add other main sections here -->
-            </ul>
-        </aside>
         <main class="main-content">
             {% block content %}{% endblock %}
         </main>
-        <aside class="right-panel">
-            <h2>Details / Ads</h2>
-            <p>Placeholder for right panel content.</p>
-        </aside>
     </div>
     <footer>
         <p>&copy; 2023 Your Name/Company</p>
