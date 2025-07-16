@@ -13,15 +13,15 @@ This application is designed to be run inside a Docker container.
 ### Build the Docker Image
 
 1.  **Navigate to the project's root directory:**
-    Open your terminal or command prompt and change to the directory that *contains* the `showcase` folder (not inside the `showcase` folder itself).
+    Open your terminal or command prompt. Make sure you are in the main project directory that contains the `showcase` folder (i.e., you should see `showcase/` if you type `ls`).
 
 2.  **Build the image:**
-    Run the following command. This will create a Docker image named `showcase-app` using the `Dockerfile` located in the `showcase` directory.
+    Run the following command. This tells Docker to build an image using the `Dockerfile` it finds inside the `showcase` directory.
     ```bash
-    docker build -t showcase-app ./showcase
+    docker build -t showcase-app showcase/
     ```
     *   `-t showcase-app`: Tags the image with the name `showcase-app`.
-    *   `./showcase`: Specifies that the Docker build context (and the `Dockerfile`) is in the `showcase` subdirectory relative to your current path.
+    *   `showcase/`: This is the build context. It tells Docker to look for the `Dockerfile` inside the `showcase` directory and to send the contents of that directory to the Docker daemon.
 
 ### Run the Docker Container
 
