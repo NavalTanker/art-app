@@ -262,8 +262,8 @@ header {
 
 .gallery-card img {
     width: 100%;
-    height: 200px;
-    object-fit: cover;
+    height: 180px; /* Landscape aspect ratio */
+    object-fit: cover; /* Fill the container, cropping if necessary */
 }
 
 .gallery-card-content {
@@ -336,8 +336,9 @@ header {
 
 .artwork-image {
     display: block;
-    width: 200px;
-    height: auto;
+    width: 250px; /* Wider for landscape */
+    height: 180px; /* Shorter for landscape */
+    object-fit: cover; /* Fill the container, cropping if necessary */
     border: 1px solid #ddd;
     background-color: #fff;
 }
