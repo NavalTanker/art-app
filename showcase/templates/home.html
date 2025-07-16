@@ -1,13 +1,26 @@
 {% extends "layout.html" %}
 
-{% block title %}Home - Art Showcase{% endblock %}
+{% block title %}Home - Art App{% endblock %}
 
 {% block content %}
-<h2>Welcome to the Art Showcase!</h2>
-<p>This is the home page of our application.</p>
-<p>Use the navigation on the left to explore different sections.</p>
-<div class="panel-placeholder">
-    <h3>Central Panel Content</h3>
-    <p>This is where the main content for the home page will go.</p>
+<div class="home-panels-container">
+    <a href="{{ url_for('showcase_galleries') }}" class="home-panel showcase-panel">
+        <div class="panel-content">
+            <h2>Showcase</h2>
+            <p>View artist galleries and developmental trails.</p>
+        </div>
+    </a>
+    <div class="home-panel lessons-panel">
+        <div class="panel-content">
+            <h2>Lessons</h2>
+            <p>Learn new art techniques and skills.</p>
+        </div>
+    </div>
+    <div class="home-panel drawing-panel">
+        <div class="panel-content">
+            <h2>Start Drawing</h2>
+            <p>An interactive canvas to create your own art.</p>
+        </div>
+    </div>
 </div>
 {% endblock %}
