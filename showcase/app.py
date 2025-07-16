@@ -67,12 +67,15 @@ def get_gallery_detail_data(gallery_id):
         # Get the correct placeholder for the current stage
         image_path = app.config['PLACEHOLDER_PATHS'][i]
         description = f"Artwork for {stage_name.replace('-', ' ').title()} has not been uploaded yet."
+        has_real_image = False
 
         if os.path.exists(stage_path):
-            images = [f for f in os.listdir(stage_path) if f.lower().endswith(('.png', 'jpg', 'jpeg', 'gif'))]
+            images = [f for f in os.listdir(stage_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
             if images:
                 image_path = f'galleries/{gallery_id}/{stage_name}/{images[0]}'
+                # Set the specific description for real images
                 description = f"This is the artwork from {stage_name.replace('-', ' ').title()}."
+                has_real_image = True
 
         stages_data.append({
             'name': stage_name.replace('-', ' ').title(),
