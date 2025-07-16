@@ -28,12 +28,26 @@
 
 <h3>Choose a Frame</h3>
 <div class="frame-selection">
-    {% for frame_num in range(1, 5) %} {# Placeholder for 4 frame styles #}
-    <div class="frame-option" onclick="selectFrame('{{ url_for('static', filename='images/frame_' ~ frame_num ~ '.png') }}')">
-        <img src="{{ url_for('static', filename='images/frame_' ~ frame_num ~ '_thumb.png') }}" alt="Frame Style {{ frame_num }}">
-        <p>Frame {{ frame_num }}</p>
+    <div class="frame-option" onclick="selectFrame('frame-style-1')">
+        <div class="frame-thumb frame-style-1"></div>
+        <p>Classic Gold</p>
     </div>
-    {% endfor %}
+    <div class="frame-option" onclick="selectFrame('frame-style-2')">
+        <div class="frame-thumb frame-style-2"></div>
+        <p>Natural Wood</p>
+    </div>
+    <div class="frame-option" onclick="selectFrame('frame-style-3')">
+        <div class="frame-thumb frame-style-3"></div>
+        <p>Modern Black</p>
+    </div>
+    <div class="frame-option" onclick="selectFrame('frame-style-4')">
+        <div class="frame-thumb frame-style-4"></div>
+        <p>Polished Silver</p>
+    </div>
+    <div class="frame-option" onclick="selectFrame('')">
+        <div class="frame-thumb no-frame-thumb"></div>
+        <p>No Frame</p>
+    </div>
 </div>
 <p class="small-note">Note: Frame selection is currently a visual placeholder and will apply to the first artwork stage for demonstration.</p>
 

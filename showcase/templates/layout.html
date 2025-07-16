@@ -11,7 +11,14 @@
 </head>
 <body>
     <header>
-        <h1><a href="{{ url_for('home') }}" class="header-link">Art App</a></h1>
+        <div class="header-content">
+            <h1 class="header-title"><a href="{{ url_for('home') }}" class="header-link">Art App</a></h1>
+            <nav class="header-nav">
+                <a href="#" class="nav-button">About</a>
+                <a href="#" class="nav-button">Login</a>
+                <a href="#" class="nav-button signup-button">Sign Up</a>
+            </nav>
+        </div>
     </header>
     <div class="container">
         <main class="main-content">
@@ -19,7 +26,7 @@
         </main>
     </div>
     <footer>
-        <p>&copy; 2023 Your Name/Company</p>
+        <p>&copy; 2025 Art App</p>
     </footer>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
