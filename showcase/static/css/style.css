@@ -98,12 +98,21 @@ header {
     color: white;
 }
 
-.modal-content p, .modal-content ul {
-    padding: 10px 30px;
+.modal-content p, .modal-content h3, .modal-content ul {
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+.modal-content h3 {
+    padding-top: 10px;
+    font-size: 1.1em;
+    margin-bottom: 0;
 }
 
 .modal-content ul {
-    list-style-position: inside;
+    list-style-position: outside;
+    padding-left: 50px; /* Indent list content */
+    margin-top: 5px;
 }
 
 .modal-content ul li {
