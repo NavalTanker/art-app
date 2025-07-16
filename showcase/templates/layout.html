@@ -14,7 +14,7 @@
         <div class="header-content">
             <h1 class="header-title"><a href="{{ url_for('home') }}" class="header-link">Art App</a></h1>
             <nav class="header-nav">
-                <a href="#" class="nav-button">About</a>
+                <a href="#" id="about-button" class="nav-button">About</a>
                 <a href="#" class="nav-button">Login</a>
                 <a href="#" class="nav-button signup-button">Sign Up</a>
             </nav>
@@ -28,6 +28,23 @@
     <footer>
         <p>&copy; 2025 Art App</p>
     </footer>
+
+    <!-- About Modal -->
+    <div id="about-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>About Art App</h2>
+            <p>Welcome to the Art App! This application is a versatile platform for artists and art enthusiasts.</p>
+            <h3>Features:</h3>
+            <ul>
+                <li><strong>Showcase:</strong> Browse dynamic art galleries, view the developmental trail of each piece, and see how artworks look in different frames. Galleries are managed simply by adding images to folders on the backend.</li>
+                <li><strong>Lessons (Coming Soon):</strong> A future section for tutorials and learning new art techniques.</li>
+                <li><strong>Start Drawing (Coming Soon):</strong> A future interactive canvas for creating your own art directly in the app.</li>
+            </ul>
+            <p>This app is built with Flask and containerized with Docker for easy setup and deployment.</p>
+        </div>
+    </div>
+
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
