@@ -1,9 +1,11 @@
 import os
-from flask import Flask, render_template, url_for, jsonify
-import natsort # For natural sorting of directory names (e.g., 'stage-1', 'stage-2', 'stage-10')
+from flask import Flask, render_template, url_for
+import natsort
 
 app = Flask(__name__)
 app.config['GALLERIES_FOLDER'] = os.path.join('static', 'galleries')
+app.config['PLACEHOLDER_IMAGE'] = url_for('static', filename='images/placeholder_art_1.png')
+app.config['NUM_STAGES'] = 3
 
 def get_galleries_data():
     """Scans the filesystem to discover galleries and their data."""
@@ -13,65 +15,60 @@ def get_galleries_data():
     if not os.path.exists(base_path):
         return []
 
-    # Get list of gallery directories, ignore files like .DS_Store
     gallery_dirs = [g for g in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, g))]
-
-    # Sort galleries naturally (e.g., gallery-1, gallery-2, gallery-10)
     gallery_dirs = natsort.natsorted(gallery_dirs)
 
     for gallery_name in gallery_dirs:
         gallery_path = os.path.join(base_path, gallery_name)
 
-        # Get stages, sort them naturally
-        stage_dirs = [s for s in os.listdir(gallery_path) if os.path.isdir(os.path.join(gallery_path, s)) and s.startswith('stage-')]
-        sorted_stages = natsort.natsorted(stage_dirs)
+        # Determine the path for the final stage to get the thumbnail
+        last_stage_name = f'stage-{app.config["NUM_STAGES"]}'
+        last_stage_path = os.path.join(gallery_path, last_stage_name)
 
-        if not sorted_stages:
-            continue
-
-        # Find the thumbnail: image from the last stage
-        thumbnail_url = url_for('static', filename='images/placeholder_gallery.png') # Default
-        last_stage_path = os.path.join(gallery_path, sorted_stages[-1])
-
-        # Find first image in the last stage folder
-        stage_images = [f for f in os.listdir(last_stage_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
-        if stage_images:
-            # Construct URL path correctly
-            thumbnail_url = url_for('static', filename=f'galleries/{gallery_name}/{sorted_stages[-1]}/{stage_images[0]}')
+        thumbnail_url = app.config['PLACEHOLDER_IMAGE']
+        if os.path.exists(last_stage_path):
+            stage_images = [f for f in os.listdir(last_stage_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
+            if stage_images:
+                thumbnail_url = url_for('static', filename=f'galleries/{gallery_name}/{last_stage_name}/{stage_images[0]}')
 
         galleries.append({
             'id': gallery_name,
             'name': gallery_name.replace('-', ' ').title(),
-            'description': f'A collection of works from {gallery_name.replace("-", " ").title()}.',
+            'description': f'A collection from {gallery_name.replace("-", " ").title()}. View the developmental trail.',
             'thumbnail': thumbnail_url
         })
 
     return galleries
 
 def get_gallery_detail_data(gallery_id):
-    """Scans the filesystem for a specific gallery's stages and images."""
+    """
+    Scans for a specific gallery's images and ensures there are always 3 stages,
+    filling with placeholders if necessary.
+    """
     gallery_path = os.path.join(app.config['GALLERIES_FOLDER'], gallery_id)
 
     if not os.path.exists(gallery_path):
         return None
 
-    # Get stages, sort them naturally
-    stage_dirs = [s for s in os.listdir(gallery_path) if os.path.isdir(os.path.join(gallery_path, s)) and s.startswith('stage-')]
-    sorted_stages = natsort.natsorted(stage_dirs)
-
     stages_data = []
-    for stage_name in sorted_stages:
+    for i in range(1, app.config['NUM_STAGES'] + 1):
+        stage_name = f'stage-{i}'
         stage_path = os.path.join(gallery_path, stage_name)
-        images = [f for f in os.listdir(stage_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
 
-        if images:
-            # For simplicity, we take the first image found in the stage folder.
-            image_url = url_for('static', filename=f'galleries/{gallery_id}/{stage_name}/{images[0]}')
-            stages_data.append({
-                'name': stage_name.replace('-', ' ').title(),
-                'image_url': image_url,
-                'description': f"This is the artwork from {stage_name.replace('-', ' ').title()}."
-            })
+        image_url = app.config['PLACEHOLDER_IMAGE']
+        description = f"Artwork for {stage_name.replace('-', ' ').title()} has not been uploaded yet."
+
+        if os.path.exists(stage_path):
+            images = [f for f in os.listdir(stage_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
+            if images:
+                image_url = url_for('static', filename=f'galleries/{gallery_id}/{stage_name}/{images[0]}')
+                description = f"This is the artwork from {stage_name.replace('-', ' ').title()}."
+
+        stages_data.append({
+            'name': stage_name.replace('-', ' ').title(),
+            'image_url': image_url,
+            'description': description
+        })
 
     return {
         'id': gallery_id,
@@ -93,7 +90,7 @@ def showcase_galleries():
 
 @app.route('/showcase/gallery/<gallery_id>')
 def gallery_detail(gallery_id):
-    """Renders the individual gallery detail page with dynamically found stages."""
+    """Renders the individual gallery detail page with a guaranteed 3 stages."""
     gallery_data = get_gallery_detail_data(gallery_id)
     if gallery_data is None:
         return "Gallery not found", 404
