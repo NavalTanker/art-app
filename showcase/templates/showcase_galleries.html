@@ -5,15 +5,17 @@
 {% block content %}
 <div class="gallery-header">
     <h2>Showcase Galleries</h2>
-    <p>Click on a gallery to view the artist's developmental trail and artwork.</p>
+    <p>A collection of developmental trails and artworks.</p>
 </div>
-<div class="gallery-grid">
+<div class="gallery-grid" {% if custom_background %}style="background-image: url('{{ custom_background }}'); background-size: cover; background-position: center;"{% endif %}>
+    <!-- Grid sizer for Masonry -->
+    <div class="grid-sizer"></div>
     {% if galleries %}
         {% for gallery in galleries %}
-        <div class="gallery-card">
+        <div class="gallery-card {{ gallery.size_class }}">
             <a href="{{ url_for('gallery_detail', gallery_id=gallery.id) }}">
-                <img src="{{ gallery.thumbnail }}" alt="{{ gallery.name }} Thumbnail">
-                <div class="gallery-card-content">
+                <img src="{{ gallery.thumbnail }}" alt="{{ gallery.name }} Thumbnail" class="gallery-thumbnail">
+                <div class="card-overlay">
                     <h3>{{ gallery.name }}</h3>
                     <p>{{ gallery.description }}</p>
                 </div>
@@ -21,7 +23,7 @@
         </div>
         {% endfor %}
     {% else %}
-        <p>No galleries found. Add some in the <code>showcase/static/galleries/</code> directory.</p>
+        <p class="no-galleries-message">No galleries found. Add some in the <code>showcase/static/galleries/</code> directory.</p>
     {% endif %}
 </div>
 {% endblock %}
