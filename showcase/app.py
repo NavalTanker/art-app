@@ -24,7 +24,7 @@ def get_galleries_data():
     gallery_dirs = [g for g in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, g))]
     gallery_dirs = natsort.natsorted(gallery_dirs)
 
-    for gallery_name in gallery_dirs:
+    for i, gallery_name in enumerate(gallery_dirs):
         gallery_path = os.path.join(base_path, gallery_name)
 
         # Thumbnail is ALWAYS from stage 3
@@ -40,11 +40,15 @@ def get_galleries_data():
                 # Use the real image path if it exists
                 thumbnail_path = f'galleries/{gallery_name}/{last_stage_name}/{stage_images[0]}'
 
+        # Assign a random size class for varied layout
+        size_class = 'grid-item--width2' if i % 4 == 0 else ''
+
         galleries.append({
             'id': gallery_name,
             'name': gallery_name.replace('-', ' ').title(),
             'description': f'A collection from {gallery_name.replace("-", " ").title()}. View the developmental trail of the artwork.',
-            'thumbnail': url_for('static', filename=thumbnail_path)
+            'thumbnail': url_for('static', filename=thumbnail_path),
+            'size_class': size_class
         })
 
     return galleries
@@ -95,11 +99,21 @@ def home():
     """Renders the home page."""
     return render_template('home.html')
 
+def find_custom_background():
+    """Checks for a custom background image."""
+    image_dir = os.path.join(app.static_folder, 'images')
+    for ext in ['.png', '.jpg', '.jpeg', '.gif']:
+        filename = 'showcase_background' + ext
+        if os.path.exists(os.path.join(image_dir, filename)):
+            return url_for('static', filename=f'images/{filename}')
+    return None
+
 @app.route('/showcase/')
 def showcase_galleries():
     """Renders the showcase gallery overview page with dynamically found galleries."""
     galleries = get_galleries_data()
-    return render_template('showcase_galleries.html', galleries=galleries)
+    custom_background = find_custom_background()
+    return render_template('showcase_galleries.html', galleries=galleries, custom_background=custom_background)
 
 @app.route('/showcase/gallery/<gallery_id>')
 def gallery_detail(gallery_id):

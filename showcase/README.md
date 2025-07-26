@@ -51,6 +51,15 @@ This application is designed to be run inside a Docker container.
     docker stop <container_id_or_name>
     ```
 
+## Customizing the Gallery Background
+
+You can add a custom background to the showcase gallery wall.
+
+1.  Find an image you want to use as the background.
+2.  Name it `showcase_background.jpg` (or `.png`, or `.gif`).
+3.  Place this file inside the `showcase/static/images/` directory.
+4.  If running in Docker, rebuild your image and run the container. The app will automatically detect and use your custom background.
+
 ## Development (Alternative - Running directly with Flask)
 
 If you prefer to run the Flask development server directly without Docker (e.g., for quick local development):
