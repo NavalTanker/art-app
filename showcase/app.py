@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, url_for
 import natsort
+from PIL import Image
 
 app = Flask(__name__)
 app.config['GALLERIES_FOLDER'] = os.path.join('static', 'galleries')
@@ -14,7 +15,7 @@ app.config['PLACEHOLDER_PATHS'] = {
 }
 
 def get_galleries_data():
-    """Scans the filesystem to discover galleries and their data."""
+    """Scans the filesystem to discover galleries, including image dimensions."""
     galleries = []
     base_path = app.config['GALLERIES_FOLDER']
 
@@ -27,28 +28,31 @@ def get_galleries_data():
     for i, gallery_name in enumerate(gallery_dirs):
         gallery_path = os.path.join(base_path, gallery_name)
 
-        # Thumbnail is ALWAYS from stage 3
         last_stage_name = f'stage-{app.config["NUM_STAGES"]}'
         last_stage_path = os.path.join(gallery_path, last_stage_name)
 
-        # Default to the stage 3 placeholder
-        thumbnail_path = app.config['PLACEHOLDER_PATHS'][3]
+        thumbnail_path_rel = app.config['PLACEHOLDER_PATHS'][3] # Relative path
 
         if os.path.exists(last_stage_path):
             stage_images = [f for f in os.listdir(last_stage_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
             if stage_images:
-                # Use the real image path if it exists
-                thumbnail_path = f'galleries/{gallery_name}/{last_stage_name}/{stage_images[0]}'
+                thumbnail_path_rel = f'galleries/{gallery_name}/{last_stage_name}/{stage_images[0]}'
 
-        # Assign a random size class for varied layout
-        size_class = 'grid-item--width2' if i % 4 == 0 else ''
+        # Get image dimensions using Pillow
+        width, height = (800, 600) # Default placeholder dimensions
+        try:
+            with Image.open(os.path.join(app.static_folder, thumbnail_path_rel)) as img:
+                width, height = img.size
+        except FileNotFoundError:
+            print(f"Warning: Thumbnail file not found at {thumbnail_path_rel}. Using default dimensions.")
 
         galleries.append({
             'id': gallery_name,
             'name': gallery_name.replace('-', ' ').title(),
-            'description': f'A collection from {gallery_name.replace("-", " ").title()}. View the developmental trail of the artwork.',
-            'thumbnail': url_for('static', filename=thumbnail_path),
-            'size_class': size_class
+            'description': f'A collection by {gallery_name.replace("-", " ").title()}.',
+            'thumbnail_url': url_for('static', filename=thumbnail_path_rel),
+            'width': width,
+            'height': height
         })
 
     return galleries
