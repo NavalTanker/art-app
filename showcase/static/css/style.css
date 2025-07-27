@@ -236,19 +236,17 @@ header {
 
 /* Gallery Grid (Masonry container) */
 .gallery-grid {
+    max-width: 1600px; /* Constrain the wall width */
     margin: 0 auto;
-    padding: 20px;
-    background-color: #f3f0e9; /* A warm, wall-like color */
-    background-image: url("https://www.transparenttextures.com/patterns/subtle-white-feathers.png"); /* Subtle texture */
+    padding: 40px; /* More space around the wall */
+    background-color: #f3f0e9;
+    background-image: url("https://www.transparenttextures.com/patterns/subtle-white-feathers.png");
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
 }
 
 .grid-sizer,
 .gallery-card {
-    width: 23%; /* Base width for items */
-}
-
-.gallery-card.grid-item--width2 {
-    width: 48%; /* Double width for specific items */
+    width: 22%; /* Adjust for padding and gutter */
 }
 
 .gallery-card {
@@ -257,7 +255,9 @@ header {
     background-color: #fff;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    /* More realistic shadow */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.1);
+    position: relative; /* Needed for z-index on hover */
 }
 
 .gallery-card:hover {
