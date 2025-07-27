@@ -12,7 +12,7 @@
     <div class="grid-sizer"></div>
     {% if galleries %}
         {% for gallery in galleries %}
-        <div class="gallery-card">
+        <div class="gallery-card {{ gallery.frame_class }}">
             <a href="{{ url_for('gallery_detail', gallery_id=gallery.id) }}">
                 <img src="{{ gallery.thumbnail_url }}" alt="{{ gallery.name }} Thumbnail" class="gallery-thumbnail" width="{{ gallery.width }}" height="{{ gallery.height }}">
                 <div class="card-overlay">

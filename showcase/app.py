@@ -1,9 +1,13 @@
 import os
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, jsonify
 import natsort
 from PIL import Image
+import random
 
 app = Flask(__name__)
+
+# In-memory 'database' for frame selections. Maps gallery_id -> frame_class
+FRAME_SELECTIONS = {}
 app.config['GALLERIES_FOLDER'] = os.path.join('static', 'galleries')
 app.config['NUM_STAGES'] = 3
 
@@ -39,12 +43,22 @@ def get_galleries_data():
                 thumbnail_path_rel = f'galleries/{gallery_name}/{last_stage_name}/{stage_images[0]}'
 
         # Get image dimensions using Pillow
-        width, height = (800, 600) # Default placeholder dimensions
+        width, height = (None, None)
+        is_placeholder = False
         try:
             with Image.open(os.path.join(app.static_folder, thumbnail_path_rel)) as img:
                 width, height = img.size
         except FileNotFoundError:
-            print(f"Warning: Thumbnail file not found at {thumbnail_path_rel}. Using default dimensions.")
+            is_placeholder = True
+            print(f"Warning: Thumbnail file not found at {thumbnail_path_rel}. Using random dimensions.")
+
+        if is_placeholder:
+            # Randomize dimensions for placeholders to create a more dynamic layout
+            width = random.randint(600, 900)
+            height = random.randint(400, 600)
+
+        # Look up the selected frame, default to no frame
+        selected_frame = FRAME_SELECTIONS.get(gallery_name, '')
 
         galleries.append({
             'id': gallery_name,
@@ -52,10 +66,21 @@ def get_galleries_data():
             'description': f'A collection by {gallery_name.replace("-", " ").title()}.',
             'thumbnail_url': url_for('static', filename=thumbnail_path_rel),
             'width': width,
-            'height': height
+            'height': height,
+            'frame_class': selected_frame
         })
 
     return galleries
+
+@app.route('/select_frame/<gallery_id>/<frame_class>')
+def select_frame_route(gallery_id, frame_class):
+    """API endpoint to store the selected frame for a gallery."""
+    if frame_class == 'no-frame': # Use a keyword for no frame
+        FRAME_SELECTIONS[gallery_id] = ''
+    else:
+        FRAME_SELECTIONS[gallery_id] = frame_class
+    print(f"Frame for {gallery_id} set to {FRAME_SELECTIONS.get(gallery_id)}") # Debug print
+    return jsonify({'success': True, 'gallery_id': gallery_id, 'frame_class': FRAME_SELECTIONS.get(gallery_id)})
 
 def get_gallery_detail_data(gallery_id):
     """

@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', function() {
         imagesLoaded(grid, function() {
             new Masonry(grid, {
                 itemSelector: '.gallery-card',
-                columnWidth: '.grid-sizer', // Use a sizer element for column width
+                columnWidth: '.grid-sizer',
                 percentPosition: true,
-                gutter: 20 // The space between items
+                gutter: 30 // Increased space between items
             });
         });
     }

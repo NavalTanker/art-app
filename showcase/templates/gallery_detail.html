@@ -32,23 +32,23 @@
 
 <h3>Choose a Frame</h3>
 <div class="frame-selection">
-    <div class="frame-option" onclick="selectFrame('frame-style-1')">
+    <div class="frame-option" onclick="selectFrame('{{ gallery.id }}', 'frame-style-1')">
         <div class="frame-thumb frame-style-1"></div>
         <p>Classic Gold</p>
     </div>
-    <div class="frame-option" onclick="selectFrame('frame-style-2')">
+    <div class="frame-option" onclick="selectFrame('{{ gallery.id }}', 'frame-style-2')">
         <div class="frame-thumb frame-style-2"></div>
         <p>Natural Wood</p>
     </div>
-    <div class="frame-option" onclick="selectFrame('frame-style-3')">
+    <div class="frame-option" onclick="selectFrame('{{ gallery.id }}', 'frame-style-3')">
         <div class="frame-thumb frame-style-3"></div>
         <p>Modern Black</p>
     </div>
-    <div class="frame-option" onclick="selectFrame('frame-style-4')">
+    <div class="frame-option" onclick="selectFrame('{{ gallery.id }}', 'frame-style-4')">
         <div class="frame-thumb frame-style-4"></div>
         <p>Polished Silver</p>
     </div>
-    <div class="frame-option" onclick="selectFrame('')">
+    <div class="frame-option" onclick="selectFrame('{{ gallery.id }}', '')">
         <div class="frame-thumb no-frame-thumb"></div>
         <p>No Frame</p>
     </div>

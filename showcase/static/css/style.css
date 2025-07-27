@@ -237,6 +237,7 @@ header {
 /* Gallery Grid (Masonry container) */
 .gallery-grid {
     max-width: 1600px; /* Constrain the wall width */
+    min-height: 100vh; /* Ensure wall extends */
     margin: 0 auto;
     padding: 40px; /* More space around the wall */
     background-color: #f3f0e9;
@@ -252,12 +253,12 @@ header {
 .gallery-card {
     margin-bottom: 20px;
     border-radius: 4px;
-    background-color: #fff;
+    background-color: #fff; /* This color will be the matte behind the image */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
-    /* More realistic shadow */
     box-shadow: 0 8px 16px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.1);
-    position: relative; /* Needed for z-index on hover */
+    position: relative;
+    padding: 15px; /* Creates the space for the frame */
 }
 
 .gallery-card:hover {
