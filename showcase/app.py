@@ -10,6 +10,8 @@ import random
 from supabase import create_client, Client
 from gotrue.errors import AuthApiError
 import json
+
+app = Flask(__name__)
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'a-default-fallback-secret-key-for-development')
 
 # Supabase setup
