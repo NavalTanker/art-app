@@ -98,46 +98,45 @@ On the API settings page, you will find:
 
 You will also need a **Flask Secret Key** for session management. This can be any long, random string of your choice.
 
-### 3. Set Environment Variables
+### 3. Create a `.env` File
 
-The application needs the following environment variables to be set:
+For a much easier and more secure setup, you will use an environment file (`.env`) to store your keys.
 
-*   `SUPABASE_URL`: Your Project URL from the Supabase dashboard.
-*   `SUPABASE_KEY`: Your `anon` `public` key from the Supabase dashboard.
-*   `FLASK_SECRET_KEY`: Your long, random string for Flask sessions.
+1.  In the **root directory** of the project (the same folder that contains the `showcase/` directory), create a new file named `.env`.
+2.  Copy the template below and paste it into your new `.env` file.
+3.  Replace the placeholder text with your actual credentials from the Supabase dashboard.
+
+**`.env` file template:**
+```
+# Supabase Credentials
+SUPABASE_URL="YOUR_SUPER_LONG_SUPABASE_URL"
+SUPABASE_KEY="YOUR_VERY_LONG_SUPABASE_ANON_KEY"
+
+# Flask Secret Key - can be any long, random string
+FLASK_SECRET_KEY="YOUR_SUPER_SECRET_RANDOM_STRING"
+```
+
+**Important:** The `.env` file should **never** be committed to version control (a `.gitignore` file would typically be used to prevent this).
+
+### 4. Run the Application
 
 #### For Docker (Recommended)
 
-Pass the environment variables to the `docker run` command using the `-e` flag:
+Now you can run the container using the `--env-file` flag, which securely passes all the keys from your `.env` file to the container.
+
+**Make sure you are in the project's root directory**, then copy and paste this command:
 
 ```bash
-docker run \
-  -e SUPABASE_URL="YOUR_SUPER_LONG_SUPABASE_URL" \
-  -e SUPABASE_KEY="YOUR_VERY_LONG_SUPABASE_ANON_KEY" \
-  -e FLASK_SECRET_KEY="YOUR_SUPER_SECRET_RANDOM_STRING" \
-  -p 5001:5000 \
-  showcase-app
+docker run --env-file ./.env -p 5001:5000 showcase-app
 ```
+*Note: The image name is `showcase-app`, not `showcase-ap`.*
 
 #### For Local Development
 
-Set the environment variables in your terminal before running the Flask app.
+Because the app now uses `python-dotenv`, you no longer need to `export` or `set` the variables manually. Simply run the app, and it will automatically load them from your `.env` file.
 
-**On macOS/Linux:**
-```bash
-export SUPABASE_URL="YOUR_SUPER_LONG_SUPABASE_URL"
-export SUPABASE_KEY="YOUR_VERY_LONG_SUPABASE_ANON_KEY"
-export FLASK_SECRET_KEY="YOUR_SUPER_SECRET_RANDOM_STRING"
-flask run
-```
-
-**On Windows (Command Prompt):**
-```bash
-set SUPABASE_URL="YOUR_SUPER_LONG_SUPABASE_URL"
-set SUPABASE_KEY="YOUR_VERY_LONG_SUPABASE_ANON_KEY"
-set FLASK_SECRET_KEY="YOUR_SUPER_SECRET_RANDOM_STRING"
-flask run
-```
+1.  Navigate to the `showcase` directory: `cd showcase`
+2.  Run the app: `flask run`
 
 ## Development (Alternative - Running directly with Flask)
 

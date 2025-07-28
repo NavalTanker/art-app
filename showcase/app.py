@@ -1,4 +1,8 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv() # Load environment variables from .env file at the very beginning
+
 from flask import Flask, render_template, url_for, jsonify, request, redirect, session, flash
 import natsort
 from PIL import Image
