@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}My Profile - Art App{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <h2>My Profile</h2>
+    {% if 'user' in session %}
+        <p>Welcome, you are logged in!</p>
+        <div class="profile-info">
+            <p><strong>User ID:</strong> {{ session['user']['id'] }}</p>
+            <p><strong>Email:</strong> {{ session['user']['email'] }}</p>
+            <p><strong>Last Sign In:</strong> {{ session['user']['last_sign_in_at'] }}</p>
+        </div>
+        <a href="{{ url_for('logout') }}" class="submit-button logout-button">Logout</a>
+    {% else %}
+        <p>You are not logged in.</p>
+        <a href="{{ url_for('login') }}">Login</a>
+    {% endif %}
+</div>
+{% endblock %}
