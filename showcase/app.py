@@ -5,8 +5,7 @@ from PIL import Image
 import random
 from supabase import create_client, Client
 from gotrue.errors import AuthApiError
-
-app = Flask(__name__)
+import json
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'a-default-fallback-secret-key-for-development')
 
 # Supabase setup
@@ -106,23 +105,26 @@ def get_gallery_detail_data(gallery_id):
     if not os.path.exists(gallery_path):
         return None
 
+    # Read descriptions from text file
+    descriptions = []
+    desc_path = os.path.join(gallery_path, 'descriptions.txt')
+    if os.path.exists(desc_path):
+        with open(desc_path, 'r') as f:
+            descriptions = [line.strip() for line in f.readlines()]
+
     stages_data = []
     for i in range(1, app.config['NUM_STAGES'] + 1):
         stage_name = f'stage-{i}'
         stage_path = os.path.join(gallery_path, stage_name)
 
-        # Get the correct placeholder for the current stage
         image_path = app.config['PLACEHOLDER_PATHS'][i]
-        description = f"Artwork for {stage_name.replace('-', ' ').title()} has not been uploaded yet."
-        has_real_image = False
+        # Use description from file if available, otherwise use default
+        description = descriptions[i-1] if i <= len(descriptions) else f"This is the artwork from Stage {i}."
 
         if os.path.exists(stage_path):
-            images = [f for f in os.listdir(stage_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
+            images = [f for f in os.listdir(stage_path) if f.lower().endswith(('.png', 'jpg', 'jpeg', 'gif'))]
             if images:
                 image_path = f'galleries/{gallery_id}/{stage_name}/{images[0]}'
-                # Set the specific description for real images
-                description = f"This is the artwork from {stage_name.replace('-', ' ').title()}."
-                has_real_image = True
 
         stages_data.append({
             'name': stage_name.replace('-', ' ').title(),

@@ -51,7 +51,9 @@ This application is designed to be run inside a Docker container.
     docker stop <container_id_or_name>
     ```
 
-## Customizing the Gallery Background
+## Customizing Content
+
+### Gallery Background
 
 You can add a custom background to the showcase gallery wall.
 
@@ -59,6 +61,22 @@ You can add a custom background to the showcase gallery wall.
 2.  Name it `showcase_background.jpg` (or `.png`, or `.gif`).
 3.  Place this file inside the `showcase/static/images/` directory.
 4.  If running in Docker, rebuild your image and run the container. The app will automatically detect and use your custom background.
+
+### Artwork Descriptions
+
+You can add custom descriptions for each stage of a gallery by creating a single text file in the gallery's main folder.
+
+1.  Create a new file named `descriptions.txt` inside a gallery folder (e.g., `showcase/static/galleries/gallery-1/descriptions.txt`).
+2.  In this file, each line corresponds to a stage. The first line is the description for Stage 1, the second line is for Stage 2, and so on.
+
+**Example `descriptions.txt`:**
+```
+This is the initial sketch for my new piece.
+Here I've blocked in the main colors.
+This is the final, detailed artwork.
+```
+
+If this file is not present, or if it has fewer lines than there are stages, the application will use a default description for the remaining stages.
 
 ## Setting Up Supabase for Authentication
 
