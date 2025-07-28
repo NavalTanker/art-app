@@ -60,6 +60,67 @@ You can add a custom background to the showcase gallery wall.
 3.  Place this file inside the `showcase/static/images/` directory.
 4.  If running in Docker, rebuild your image and run the container. The app will automatically detect and use your custom background.
 
+## Setting Up Supabase for Authentication
+
+This project uses Supabase for user authentication. You will need to create a free Supabase project and provide its credentials to the application via environment variables.
+
+### 1. Create a Supabase Project
+
+1.  Go to [supabase.com](https://supabase.com/) and sign up or log in.
+2.  Create a new project. You can use the free tier.
+3.  Once your project is created, go to the **Project Settings** (the gear icon in the left sidebar).
+4.  In the settings menu, click on **API**.
+
+### 2. Find Your Credentials
+
+On the API settings page, you will find:
+
+*   **Project URL**: Under the "Project URL" section.
+*   **Project API Keys**: Under this section, find the `anon` `public` key. This is your public-facing "anon key".
+
+You will also need a **Flask Secret Key** for session management. This can be any long, random string of your choice.
+
+### 3. Set Environment Variables
+
+The application needs the following environment variables to be set:
+
+*   `SUPABASE_URL`: Your Project URL from the Supabase dashboard.
+*   `SUPABASE_KEY`: Your `anon` `public` key from the Supabase dashboard.
+*   `FLASK_SECRET_KEY`: Your long, random string for Flask sessions.
+
+#### For Docker (Recommended)
+
+Pass the environment variables to the `docker run` command using the `-e` flag:
+
+```bash
+docker run \
+  -e SUPABASE_URL="YOUR_SUPER_LONG_SUPABASE_URL" \
+  -e SUPABASE_KEY="YOUR_VERY_LONG_SUPABASE_ANON_KEY" \
+  -e FLASK_SECRET_KEY="YOUR_SUPER_SECRET_RANDOM_STRING" \
+  -p 5001:5000 \
+  showcase-app
+```
+
+#### For Local Development
+
+Set the environment variables in your terminal before running the Flask app.
+
+**On macOS/Linux:**
+```bash
+export SUPABASE_URL="YOUR_SUPER_LONG_SUPABASE_URL"
+export SUPABASE_KEY="YOUR_VERY_LONG_SUPABASE_ANON_KEY"
+export FLASK_SECRET_KEY="YOUR_SUPER_SECRET_RANDOM_STRING"
+flask run
+```
+
+**On Windows (Command Prompt):**
+```bash
+set SUPABASE_URL="YOUR_SUPER_LONG_SUPABASE_URL"
+set SUPABASE_KEY="YOUR_VERY_LONG_SUPABASE_ANON_KEY"
+set FLASK_SECRET_KEY="YOUR_SUPER_SECRET_RANDOM_STRING"
+flask run
+```
+
 ## Development (Alternative - Running directly with Flask)
 
 If you prefer to run the Flask development server directly without Docker (e.g., for quick local development):

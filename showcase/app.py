@@ -1,10 +1,24 @@
 import os
-from flask import Flask, render_template, url_for, jsonify
+from flask import Flask, render_template, url_for, jsonify, request, redirect, session, flash
 import natsort
 from PIL import Image
 import random
+from supabase import create_client, Client
+from gotrue.errors import AuthApiError
 
 app = Flask(__name__)
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'a-default-fallback-secret-key-for-development')
+
+# Supabase setup
+url: str = os.environ.get("SUPABASE_URL")
+key: str = os.environ.get("SUPABASE_KEY")
+
+# Check if Supabase credentials are provided
+if not url or not key:
+    print("Warning: Supabase URL or Key not provided. Authentication will not work.")
+    supabase = None
+else:
+    supabase: Client = create_client(url, key)
 
 # In-memory 'database' for frame selections. Maps gallery_id -> frame_class
 FRAME_SELECTIONS = {}
@@ -151,6 +165,54 @@ def gallery_detail(gallery_id):
     if gallery_data is None:
         return "Gallery not found", 404
     return render_template('gallery_detail.html', gallery=gallery_data)
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        if not supabase:
+            flash('Supabase not configured.', 'error')
+            return redirect(url_for('signup'))
+        email = request.form.get('email')
+        password = request.form.get('password')
+        try:
+            res = supabase.auth.sign_up({"email": email, "password": password})
+            flash('Signup successful! Please check your email to verify.', 'success')
+            return redirect(url_for('login'))
+        except AuthApiError as e:
+            flash(e.message, 'error')
+            return redirect(url_for('signup'))
+    return render_template('signup.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        if not supabase:
+            flash('Supabase not configured.', 'error')
+            return redirect(url_for('login'))
+        email = request.form.get('email')
+        password = request.form.get('password')
+        try:
+            res = supabase.auth.sign_in_with_password({"email": email, "password": password})
+            # Store user session
+            session['user'] = res.user.dict()
+            flash('Login successful!', 'success')
+            return redirect(url_for('profile'))
+        except AuthApiError as e:
+            flash(e.message, 'error')
+            return redirect(url_for('login'))
+    return render_template('login.html')
+
+@app.route('/profile')
+def profile():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    return render_template('profile.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    flash('You have been logged out.', 'success')
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
