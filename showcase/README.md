@@ -122,9 +122,9 @@ FLASK_SECRET_KEY="YOUR_SUPER_SECRET_RANDOM_STRING"
 
 #### For Docker (Recommended)
 
-Now you can run the container using the `--env-file` flag, which securely passes all the keys from your `.env` file to the container.
+Now you can run the container using the `--env-file` flag. This command securely passes all the keys from your `.env` file to the container.
 
-**Make sure you are in the project's root directory**, then copy and paste this command:
+**IMPORTANT: This command must be run from the project's root directory** (the same folder where you created the `.env` file and where you see the `showcase/` directory).
 
 ```bash
 docker run --env-file ./.env -p 5001:5000 showcase-app
